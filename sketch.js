@@ -46,10 +46,8 @@ let notes = [
       osc = new p5.Oscillator('sine');
       cnv.mouseClicked(toggleSound)
     
-   
-   
   }
-  //granie dźwięku na kliknięcie
+  //"puszczenie" dźwięku przy kliknięcu myszy w canvas
   function toggleSound() {
     if(playing){
         osc.stop();
@@ -61,7 +59,6 @@ let notes = [
     }
   }
   function listening() {
-    console.log('listening');
     pitch = ml5.pitchDetection(model_url, audioContext, mic.stream, modelLoaded);
   }
   
@@ -76,10 +73,11 @@ let notes = [
   }
   
   function modelLoaded() {
-    console.log('model loaded');
     pitch.getPitch(gotPitch);
   }
   
+
+  //funkcja sprawdzająca czy nie wystąpił błąd przy próbie pobrania inputu z mikrofonu
   function gotPitch(error, frequency) {
 
     if (error) {
@@ -100,9 +98,6 @@ let notes = [
 
 
 
-function drawPickString(){
- console.log(1);
-}
 
 
   function drawTuner(){
@@ -133,7 +128,7 @@ function drawPickString(){
     fill(255, alpha);
     stroke(255);
     strokeWeight(1);
-    /// rysowanie odległości od poprawnego dźwięku (czerwony/zielony) w zależności od zmiennej diff
+    /// rysowanie odległości od poprawnego dźwięku (czerwony/zielony) w zależności od zmiennej diff (kwadraty)
     if(diff>30){
         for(let i=1;i<=3;i++){
             fill(255, 0, 0);
@@ -198,7 +193,7 @@ function drawPickString(){
     else{
       rect(200 + diff / 2, 100, 10, 75);
     }
-
+    ///warunek sprawdzający czy został naciśnięty przycisk myszy na stronie aby odtwarzać dany dźwięk
     if (playing) {
         osc.freq(closestNote.freq, 0.1);
         osc.amp(1, 1);
